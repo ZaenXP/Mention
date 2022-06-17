@@ -1,13 +1,10 @@
-from telegraph import upload_file
-from telethon import Button
 import os, logging, asyncio
+from telethon import Button
 from telethon import TelegramClient, events
-from telethon.sessions import StringSession
-from telethon.tl.types import ChannelParticipantsAdmins
-from telethon.errors import UserNotParticipantError
-from telethon.tl import types
+from telethon.tl.types import ChannelParticipantAdmin
+from telethon.tl.types import ChannelParticipantCreator
 from telethon.tl.functions.channels import GetParticipantRequest
-from telethon.tl.types import ChannelParticipantAdmin, ChannelParticipantCreator
+from telethon.errors import UserNotParticipantError
 
 logging.basicConfig(
     level=logging.INFO,
@@ -18,136 +15,109 @@ LOGGER = logging.getLogger(__name__)
 api_id = int(os.environ.get("APP_ID"))
 api_hash = os.environ.get("API_HASH")
 bot_token = os.environ.get("TOKEN")
-ribot = TelegramClient('client', api_id, api_hash).start(bot_token=bot_token)
+client = TelegramClient('client', api_id, api_hash).start(bot_token=bot_token)
+spam_chats = []
 
-moment_worker = []
-
-
-#start
-@ribot.on(events.NewMessage(pattern="^/start$"))
+@client.on(events.NewMessage(pattern="^/start$"))
 async def start(event):
-  await event.reply("👏 Hallo!!, Selamat datang di menu bantuan mention bot\nSaya dapat menge Tag all seluruh anggota member di group,dan anggota member di saluran channel.\nButuh bantuan? /help ",
-                    buttons=(
-                      [
-                         Button.url('[Channel]', 'https://t.me/Mafia_TobaTz'), 
-                         Button.url('[Grup]', 'https://t.me/SharingUserbot'), 
-                      ], 
-                      [
-                        Button.url('➕ [ᴀᴅᴅ ᴍᴇ ᴛᴏ ʏᴏᴜʀ ɢʀᴜᴘ➕ ', 'https://t.me/MEMBER_TAGERBOT?startgroup=true'),   
-                      ]
-                   ), 
-                    link_preview=False
-                   )
+  await event.reply(
+    "__**I'm MentionAll Bot**, I can mention almost all members in group or channel 👻\nClick **/help** for more information__\n\n Follow [Zaen](https://github.com/ZaenXP) on Github",
+    link_preview=False,
+    buttons=(
+      [
+        Button.url('❏Channel❏', 'https://t.me/GabutnyaZaen'),
+        Button.url('❏Dev❏', 'https://t.me/Mafia_TobaTz')
+      ]
+    )
+  )
 
-#help
-@ribot.on(events.NewMessage(pattern="^/help$"))
+@client.on(events.NewMessage(pattern="^/help$"))
 async def help(event):
-  helptext = "**Tag Help Bot's Help Menu**\n\nCommand: @all \n Anda dapat menggunakan perintah ini dengan teks yang ingin Anda beri tahu pada orang lain \n`Contoh: @all Good morning!` \nAtau Anda dapat menggunakan perintah ini sebagai jawaban,Dan Bot akan menandai pengguna untuk membalas pesan"
-  await event.reply(helptext,
-                    buttons=(
-                      [
-                         Button.url('[Channel]', 'https://t.me/SilenceSpe4ks'), 
-                         Button.url('[Grup]', 'https://t.me/SharingUserbot'), 
-                      ], 
-                      [
-                        Button.url('➕ 𝙰𝙳𝙳 𝙼𝙴 𝚃𝙾 𝚈𝙾𝚄𝚁 𝙶𝚁𝙾𝚄𝙿𝚂 ➕ ', 'https://t.me/MEMBER_TAGERBOT?startgroup=true'),   
-                      ]
-                   ), 
-                    link_preview=False
-                   )
-
-# command atau perintah
-
-#tag
-@ribot.on(events.NewMessage(pattern="^/tagall|/call|/tall|/all|#all|@all?(.*)"))
+  helptext = "**Help Menu of MentionAllBot**\n\nCommand: /all\n__You can use this command with text what you want to mention others.__\n`Example: /all Good Morning!`\n__You can you this command as a reply to any message. Bot will tag users to that replied messsage__.\n\nFollow [Zaen](https://github.com/ZaenXP) on Github"
+  await event.reply(
+    helptext,
+    link_preview=False,
+    buttons=(
+      [
+        Button.url('❏Channel❏', 'https://t.me/Mafia_TobaTz'),
+        Button.url('❏Dev❏', 'https://t.me/Mafia_TobaTz')
+      ]
+    )
+  )
+  
+@client.on(events.NewMessage(pattern="^/all ?(.*)"))
 async def mentionall(event):
-  global moment_worker
+  chat_id = event.chat_id
   if event.is_private:
-    return await event.respond("Gunakan perintah ini di channel atau di group")
+    return await event.respond("__This command can be use in groups and channels!__")
   
-  admins = []
-  async for admin in ribot.iter_participants(event.chat_id, filter=ChannelParticipantsAdmins):
-    admins.append(admin.id)
-  if not event.sender_id in admins:
-    return await event.respond("Hanya admin yang bisa menggunakannya.")
+  is_admin = False
+  try:
+    partici_ = await client(GetParticipantRequest(
+      event.chat_id,
+      event.sender_id
+    ))
+  except UserNotParticipantError:
+    is_admin = False
+  else:
+    if (
+      isinstance(
+        partici_.participant,
+        (
+          ChannelParticipantAdmin,
+          ChannelParticipantCreator
+        )
+      )
+    ):
+      is_admin = True
+  if not is_admin:
+    return await event.respond("__Only admins can mention all!__")
   
-  if event.pattern_match.group(1):
+  if event.pattern_match.group(1) and event.is_reply:
+    return await event.respond("__Give me one argument!__")
+  elif event.pattern_match.group(1):
     mode = "text_on_cmd"
     msg = event.pattern_match.group(1)
-  elif event.reply_to_msg_id:
+  elif event.is_reply:
     mode = "text_on_reply"
-    msg = event.reply_to_msg_id
+    msg = await event.get_reply_message()
     if msg == None:
-        return await event.respond("Saya tidak bisa menyebutkan anggota untuk posting lama!")
-  elif event.pattern_match.group(1) and event.reply_to_msg_id:
-    return await event.respond("Berikan saya argumentasi. Contoh: `/tag Naik, Ada giveaway !!`")
+        return await event.respond("__I can't mention members for older messages! (messages which are sent before I'm added to group)__")
   else:
-    return await event.respond("Balas ke pesan atau berikan beberapa teks untuk disebutkan pada member!")
-    
-  if mode == "text_on_cmd":
-    moment_worker.append(event.chat_id)
-    usrnum = 0
-    usrtxt = ""
-    async for usr in ribot.iter_participants(event.chat_id):
-      usrnum += 1
-      usrtxt += f"[{usr.first_name}](tg://user?id={usr.id}) "
-      if event.chat_id not in moment_worker:
-        await event.respond("MentionAll Berhasil di cancel!")
-        return
-      if usrnum == 5:
-        await ribot.send_message(event.chat_id, f"{usrtxt}\n\n{msg}")
-        await asyncio.sleep(2)
-        usrnum = 0
-        usrtxt = ""
-        
+    return await event.respond("__Reply to a message or give me some text to mention others!__")
   
-  if mode == "text_on_reply":
-    moment_worker.append(event.chat_id)
- 
-    usrnum = 0
-    usrtxt = ""
-    async for usr in ribot.iter_participants(event.chat_id):
-      usrnum += 1
-      usrtxt += f"[{usr.first_name}](tg://user?id={usr.id}) "
-      if event.chat_id not in moment_worker:
-        await event.respond("MentionAll Berhasil di cancel!")
-        return
-      if usrnum == 5:
-        await ribot.send_message(event.chat_id, usrtxt, reply_to=msg)
-        await asyncio.sleep(2)
-        usrnum = 0
-        usrtxt = ""
+  spam_chats.append(chat_id)
+  usrnum = 0
+  usrtxt = ''
+  async for usr in client.iter_participants(chat_id):
+    if not chat_id in spam_chats:
+      break
+    usrnum += 1
+    usrtxt += f"[{usr.first_name}](tg://user?id={usr.id}) "
+    if usrnum == 5:
+      if mode == "text_on_cmd":
+        txt = f"{usrtxt}\n\n{msg}"
+        await client.send_message(chat_id, txt)
+      elif mode == "text_on_reply":
+        await msg.reply(usrtxt)
+      await asyncio.sleep(2)
+      usrnum = 0
+      usrtxt = ''
+  try:
+    spam_chats.remove(chat_id)
+  except:
+    pass
 
-
-# Cancel
-@ribot.on(events.NewMessage(pattern="^/cancel$"))
+@client.on(events.NewMessage(pattern="^/cancel$"))
 async def cancel_spam(event):
-    is_admin = False
+  if not event.chat_id in spam_chats:
+    return await event.respond('__There is no proccess on going...__')
+  else:
     try:
-        partici_ = await ribot(GetParticipantRequest(
-            event.chat_id,
-            event.sender_id
-        ))
-    except UserNotParticipantError:
-        is_admin = False
-    else:
-        if (
-                isinstance(
-                    partici_.participant,
-                    (
-                            ChannelParticipantAdmin,
-                            ChannelParticipantCreator
-                    )
-                )
-        ):
-            is_admin = True
-    if not is_admin:
-        return await event.reply("__Hanya admin yang dapat menjalankan perintah ini!__")
-    if not event.chat_id in moment_worker:
-        return await event.reply("__Tidak ada proses yang berjalan...__")
-    else:
-        try:
-            moment_worker.remove(event.chat_id)
-        except:
-            pass
-        return await event.respond('**__Mention all berhenti..**')
+      spam_chats.remove(event.chat_id)
+    except:
+      pass
+    return await event.respond('__Stopped.__')
+
+print(">> BOT STARTED <<")
+client.run_until_disconnected()
