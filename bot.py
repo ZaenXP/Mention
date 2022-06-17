@@ -21,7 +21,7 @@ spam_chats = []
 @client.on(events.NewMessage(pattern="^/start$"))
 async def start(event):
   await event.reply(
-    "__**I'm MentionAll Bot**, I can mention almost all members in group or channel 👻\nClick **/help** for more information__\n\n Follow [Zaen](https://github.com/Zaen67) on Github",
+    "__**I'm MentionAll Bot**, I can mention almost all members in group or channel 👻\nClick **/help** for more information__\n\n Follow [Zaen](https://github.com/ZaenXP) on Github",
     link_preview=False,
     buttons=(
       [
@@ -33,13 +33,13 @@ async def start(event):
 
 @client.on(events.NewMessage(pattern="^/help$"))
 async def help(event):
-  helptext = "**Help Menu of MentionAllBot**\n\nCommand: /all\n__You can use this command with text what you want to mention others.__\n`Example: /all Good Morning!`\n__You can you this command as a reply to any message. Bot will tag users to that replied messsage__.\n\nFollow [Zaen](https://github.com/Zaen67) on Github"
+  helptext = "**Help Menu of MentionAllBot**\n\nCommand: /all\n__You can use this command with text what you want to mention others.__\n`Example: /all Good Morning!`\n__You can you this command as a reply to any message. Bot will tag users to that replied messsage__.\n\nFollow [Zaen](https://github.com/ZaenXP) on Github"
   await event.reply(
     helptext,
     link_preview=False,
     buttons=(
       [
-        Button.url('❏Channel❏', 'https://t.me/GabutnyaZaen'),
+        Button.url('❏Channel❏', 'https://t.me/Mafia_TobaTz'),
         Button.url('❏Dev❏', 'https://t.me/Mafia_TobaTz')
       ]
     )
