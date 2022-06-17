@@ -150,4 +150,4 @@ async def cancel_spam(event):
             moment_worker.remove(event.chat_id)
         except:
             pass
-        return await event.respond('**__Mention all berhenti..**")
+        return await event.respond('**__Mention all berhenti..**')
