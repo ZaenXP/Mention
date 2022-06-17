@@ -1,4 +1,5 @@
 import os, logging, asyncio
+from telethon import BOT_USERNAME
 from telethon import Button
 from telethon import TelegramClient, events
 from telethon.tl.types import ChannelParticipantAdmin
@@ -25,7 +26,7 @@ async def start(event):
     link_preview=False,
     buttons=(
        
-        Button.url('➕ 𝙰𝙳𝙳 𝙼𝙴 𝚃𝙾 𝚈𝙾𝚄𝚁 𝙶𝚁𝙾𝚄𝙿𝚂 ➕ ', 'https://t.me/MEMBER_TAGERBOT?startgroup=true'), 
+        Button.url("➕ [ᴀᴅᴅ ᴍᴇ ᴛᴏ ʏᴏᴜʀ ɢʀᴜᴘ] ➕", url=f"https://t.me/{BOT_USERNAME}?startgroup=true'), 
         Button.url('[Channel]', 'https://t.me/GabutnyaZaen'),
         Button.url('[Dev]', 'https://t.me/Mafia_TobaTz')
     )
