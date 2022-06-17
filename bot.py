@@ -26,8 +26,8 @@ async def start(event):
     link_preview=False,
     buttons=(
        [       
-        Button.url("➕ [ᴀᴅᴅ ᴍᴇ ᴛᴏ ʏᴏᴜʀ ɢʀᴜᴘ] ➕', 'url=f"https://t.me/MEMBER_TAGERBOT?startgroup=true'), 
- 
+        Button.url('➕ 𝙰𝙳𝙳 𝙼𝙴 𝚃𝙾 𝚈𝙾𝚄𝚁 𝙶𝚁𝙾𝚄𝙿𝚂 ➕ ', 'https://t.me/MEMBER_TAGERBOT?startgroup=true'),   
+                      
        ]
         Button.url('[Channel]', 'https://t.me/GabutnyaZaen'),
 
