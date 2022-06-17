@@ -25,7 +25,7 @@ async def start(event):
     link_preview=False,
     buttons=(
       [
-        InlineKeyboardButton("➕ [ᴀᴅᴅ ᴍᴇ ᴛᴏ ʏᴏᴜʀ ɢʀᴜᴘ] ➕", url=f"https://t.me/{BOT_USERNAME}?startgroup=true"),
+        Button.url("➕ [ᴀᴅᴅ ᴍᴇ ᴛᴏ ʏᴏᴜʀ ɢʀᴜᴘ] ➕", url=f"https://t.me/{BOT_USERNAME}?startgroup=true"),
       ], 
         Button.url('[Channel]', 'https://t.me/GabutnyaZaen'),
         Button.url('[Dev]', 'https://t.me/Mafia_TobaTz')
