@@ -25,8 +25,10 @@ async def start(event):
     link_preview=False,
     buttons=(
       [
-        Button.url('❏Channel❏', 'https://t.me/GabutnyaZaen'),
-        Button.url('❏Dev❏', 'https://t.me/Mafia_TobaTz')
+        InlineKeyboardButton("➕ [ᴀᴅᴅ ᴍᴇ ᴛᴏ ʏᴏᴜʀ ɢʀᴜᴘ] ➕", url=f"https://t.me/{BOT_USERNAME}?startgroup=true"),
+      ], 
+        Button.url('[Channel]', 'https://t.me/GabutnyaZaen'),
+        Button.url('[Dev]', 'https://t.me/Mafia_TobaTz')
       ]
     )
   )
@@ -39,8 +41,8 @@ async def help(event):
     link_preview=False,
     buttons=(
       [
-        Button.url('❏Channel❏', 'https://t.me/Mafia_TobaTz'),
-        Button.url('❏Dev❏', 'https://t.me/Mafia_TobaTz')
+        Button.url('[Channel]', 'https://t.me/Mafia_TobaTz'),
+        Button.url('[Dev]', 'https://t.me/Mafia_TobaTz')
       ]
     )
   )
