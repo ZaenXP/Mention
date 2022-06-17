@@ -29,7 +29,7 @@ async def start(event):
   await event.reply("👏 Hallo!!, Selamat datang di menu bantuan mention bot\nSaya dapat menge Tag all seluruh anggota member di group,dan anggota member di saluran channel.\nButuh bantuan? /help ",
                     buttons=(
                       [
-                         Button.url('[Channel]', 'https://t.me/Mafia_TobaTz), 
+                         Button.url('[Channel]', 'https://t.me/Mafia_TobaTz'), 
                          Button.url('[Grup]', 'https://t.me/SharingUserbot'), 
                       ], 
                       [
