@@ -29,7 +29,6 @@ async def start(event):
       ], 
         Button.url('[Channel]', 'https://t.me/GabutnyaZaen'),
         Button.url('[Dev]', 'https://t.me/Mafia_TobaTz')
-      ]
     )
   )
 
