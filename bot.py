@@ -25,9 +25,13 @@ async def start(event):
     "__**I'm MentionAll Bot**, I can mention almost all members in group or channel 👻\nClick **/help** for more information__\n\n Follow [Zaen](https://github.com/ZaenXP) on Github",
     link_preview=False,
     buttons=(
-       
+       [       
         Button.url("➕ [ᴀᴅᴅ ᴍᴇ ᴛᴏ ʏᴏᴜʀ ɢʀᴜᴘ] ➕", url=f"https://t.me/{BOT_USERNAME}?startgroup=true'), 
+ 
+       ]
         Button.url('[Channel]', 'https://t.me/GabutnyaZaen'),
+
+       [
         Button.url('[Dev]', 'https://t.me/Mafia_TobaTz')
     )
   )
